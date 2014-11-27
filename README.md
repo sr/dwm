@@ -25,9 +25,10 @@ recommended to also install the bluegray files shipped in the dextra package.
 #### Ubuntu
 Execute bash script (below). Tested on Ubuntu 14.04.1 LTS
 
+    sudo chmod +x install-ubuntu
     ./install-ubuntu
 
-<small>clone git repository content into __/usr/local/src__ </small>
+`clone git repository content into __/usr/local/src__`
 
 Running dwm
 -----------
