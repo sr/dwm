@@ -13,19 +13,22 @@ Installation
 Edit config.mk to match your local setup (dwm is installed into
 the /usr/local namespace by default).
 
-#### Ubuntu
-Execute bash script (below). Tested on Ubuntu 14.04.1 LTS
-
-    ./install-ubuntu
-
 Afterwards enter the following command to build and install dwm (if
 necessary as root):
 
     make clean install
-> clone git repository content into /usr/local/src
 
 If you are going to use the default bluegray color scheme it is highly
 recommended to also install the bluegray files shipped in the dextra package.
+
+
+#### Ubuntu
+Execute bash script (below). Tested on Ubuntu 14.04.1 LTS
+
+    ./install-ubuntu
+> <small>clone git repository content into <strong>/usr/local/src</strong></small>
+
+
 
 
 Running dwm
