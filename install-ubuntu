@@ -20,9 +20,19 @@ LOG="$DIR/install.log"
 # ensures log file has been created
 touch "$DIR/log/$LOGFILE" > /dev/null
 
+
+log_daemon_msg "Installing dependencies..."
+# installs dependencies
+sudo apt-get install -y build-essential libx11-dev libxinerama-dev sharutils >> $LOG
+log_end_msg 0
+
+
+log_daemon_msg "Compiling dwm..."
 # compiles source
 sudo make clean install >> $LOG
+log_end_msg 0
 
+log_daemon_msg "adding dwm to avaiable xsessions at login ..."
 # install package from Ubuntu repository
 sudo apt-get install -y dwm >> $LOG
 
@@ -37,4 +47,4 @@ sudo apt-get purge -y dwm >> $LOG
 # copes backup file back to org to allow selection at login
 sudo mv /usr/share/xsessions/dwm.desktop{.bak,} >> $LOG
 
-
+log_end_msg 0
