@@ -28,7 +28,7 @@ Execute bash script (below). Tested on Ubuntu 14.04.1 LTS
     sudo chmod +x install-ubuntu
     ./install-ubuntu
 
-`clone git repository content into __/usr/local/src__`
+`clone git repository content into /usr/local/src`
 
 Running dwm
 -----------
