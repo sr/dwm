@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Load the VERBOSE setting and other rcS variables
+. /lib/init/vars.sh
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.2-14) to ensure that this file is present
+# and status_of_proc is working.
+. /lib/lsb/init-functions
+
+# CurWorDir (lol - came out of my mouth didn't it)
+DIR=$(dirname $(readlink -e $0))
+
+# gets sudo rights
+sudo -v >> "$DIR/log/$LOGFILE"
+
+# log file for install process
+LOG="$DIR/install.log"
+
+# ensures log file has been created
+touch "$DIR/log/$LOGFILE" > /dev/null
+
+# compiles source
+sudo make clean install >> $LOG
+
+# install package from Ubuntu repository
+sudo apt-get install -y dwm >> $LOG
+
+# creates backup of .desktop file
+# in xsessions that allows selection at login
+sudo cp /usr/share/xsessions/dwm.desktop{,.bak} >> $LOG
+
+# removes the dwm package (he said package) 
+# to allow for this one to take its place
+sudo apt-get purge -y dwm >> $LOG
+
+# copes backup file back to org to allow selection at login
+sudo mv /usr/share/xsessions/dwm.desktop{.bak,} >> $LOG
+
+
