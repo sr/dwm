@@ -1,4 +1,6 @@
 *.log
 *.swp
 *.swo
+*.o
+dwm
 dwm-5.8/*
