@@ -22,6 +22,14 @@ If you are going to use the default bluegray color scheme it is highly
 recommended to also install the bluegray files shipped in the dextra package.
 
 
+#### Ubuntu
+Execute bash script (below). Tested on Ubuntu 14.04.1 LTS
+
+    sudo chmod +x install-ubuntu
+    ./install-ubuntu
+
+`clone git repository content into /usr/local/src`
+
 Running dwm
 -----------
 Add the following line to your .xinitrc to start dwm using startx:
@@ -38,10 +46,9 @@ the DISPLAY environment variable is set correctly, e.g.:
 In order to display status info in the bar, you can do something
 like this in your .xinitrc:
 
-    while true
+    while xsetroot -name "`date` `uptime | sed 's/.*,//'`"
     do
-        xsetroot -name "`date` `uptime | sed 's/.*,//'`"
-        sleep 1
+    	sleep 1
     done &
     exec dwm
 

@@ -2,24 +2,54 @@
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
-static const char normbordercolor[] = "#444444";
-static const char normbgcolor[]     = "#222222";
-static const char normfgcolor[]     = "#bbbbbb";
-static const char selbordercolor[]  = "#005577";
-static const char selbgcolor[]      = "#005577";
-static const char selfgcolor[]      = "#eeeeee";
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+
+#define NUMCOLORS 20
+static const char colors[NUMCOLORS][ColLast][20] = {
+    /* border     fg         bg */
+    { "#242323", "#94928F", "#000000" },            /* 01 - normal */
+    { "#666362", "#CDCDCD", "#17597b" },            /* 02 - selected */
+    { "#91444D", "#91444D", "#000000" },            /* 03 - urgent */
+
+    { "#0A1724", "#0A1724", "#000000" },            /* 04 - black */
+    { "#701726", "#701726", "#000000" },            /* 05 - red */
+    { "#286332", "#286332", "#000000" },            /* 06 - green */
+    { "#706A2D", "#706A2D", "#000000" },            /* 07 - yellow */
+    { "#00508A", "#00508A", "#000000" },            /* 08 - blue */
+    { "#454E7D", "#454E7D", "#000000" },            /* 09 - magenta */
+    { "#000000", "#000000", "#000000" },            /* unusable */
+    { "#007070", "#007070", "#000000" },            /* 0B - cyan */
+    { "#5E687D", "#5E687D", "#000000" },            /* 0C - light gray */
+    { "#303B4A", "#303B4A", "#000000" },            /* 0D - gray */
+    { "#A33144", "#A33144", "#000000" },            /* 0E - light red */
+    { "#449652", "#449652", "#000000" },            /* 0F - light green */
+    { "#A38262", "#A38262", "#000000" },            /* 10 - light yellow */
+    { "#357CB0", "#357CB0", "#000000" },            /* 11 - light blue */
+    { "#963576", "#963576", "#000000" },            /* 12 - light magenta */
+    { "#2C9696", "#2C9696", "#000000" },            /* 13 - light cyan */
+    { "#878F96", "#878F96", "#000000" },            /* 14 - white */
+};
+
+static const char normbordercolor[] = "#242323";
+static const char normbgcolor[]     = "#000000";
+static const char normfgcolor[]     = "#94928F";
+static const char selbordercolor[]  = "#666362";
+static const char selbgcolor[]      = "#17597b";
+static const char selfgcolor[]      = "#CDCDCD";
+static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = {
+    "1",
+    "2",
+    "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
+	{ "Gimp",     NULL,       NULL,       1 << 2,       False,       -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 1,       False,       -1 },
 };
 
 /* layout(s) */
@@ -46,7 +76,20 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", font, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenucmd[] = {
+"dmenu_run",
+"-fn", font,
+"-nb",
+normbgcolor,
+"-nf", 
+normfgcolor,
+"-sb",
+selbgcolor,
+"-sf"
+,selfgcolor,
+NULL
+};
+
 static const char *termcmd[]  = { "uxterm", NULL };
 
 static Key keys[] = {
