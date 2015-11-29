@@ -4,10 +4,9 @@ dwm is an extremely fast, small, and dynamic window manager for X.
 
 My fork (aario) contains these features:
 based on version 6.1(20151109)
-Status bar included.
+Systray included.
 All shortcuts are now based on Win key (instead of Alt or Shift+Alt)
 You can also close windows by Alt+F4
-Pressing Win key alone launches dmenu
 
 Requirements
 ------------
