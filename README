@@ -2,6 +2,12 @@ dwm - dynamic window manager
 ============================
 dwm is an extremely fast, small, and dynamic window manager for X.
 
+My fork (aario) contains these features:
+based on version 6.1(20151109)
+Status bar included.
+All shortcuts are now based on Win key (instead of Alt or Shift+Alt)
+You can also close windows by Alt+F4
+Pressing Win key alone launches dmenu
 
 Requirements
 ------------
@@ -38,10 +44,9 @@ the DISPLAY environment variable is set correctly, e.g.:
 In order to display status info in the bar, you can do something
 like this in your .xinitrc:
 
-    while true
+    while xsetroot -name "`date` `uptime | sed 's/.*,//'`"
     do
-        xsetroot -name "`date` `uptime | sed 's/.*,//'`"
-        sleep 1
+    	sleep 1
     done &
     exec dwm
 
