@@ -6,7 +6,8 @@ What's in this fork?
 --------------------
 My fork (aario) contains these features:
 - based on version 6.1(20151109)
-- Systray included.
+- Systray patch applied
+- Per-window keyboard layout patch applied
 - All shortcuts are now based on Win key (instead of Alt or Shift+Alt)
 - You can also close windows by Alt+F4
 
