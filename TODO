@@ -2,3 +2,11 @@
 		affecting the keyboard grab, see scrot -s for example)
 - add updategeom() hook for external tools like dzen
 - consider onscreenkeyboard hooks for tablet deployment
+
+Consider use of below for searching and raising clients:
+	http://dwm.suckless.org/patches/dwm-6.1-runorraise.diff
+Apply below patches:
+	http://dwm.suckless.org/patches/dwm-r1615-selfrestart.diff
+	http://dwm.suckless.org/patches/dwm-6.1-cfacts.diff
+	http://dwm.suckless.org/patches/dwm-6.1-dualstatus.diff
+	http://dwm.suckless.org/patches/dwm-6.1-push.diff
