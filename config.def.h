@@ -16,11 +16,13 @@ static const char *fonts[] = {
 };
 static const char dmenufont[]       = "monospace:size=10";
 static const char normbordercolor[] = "#444444";
-static const char normbgcolor[]     = "#222222";
-static const char normfgcolor[]     = "#bbbbbb";
+static const char firstbgcolor[]     = "#000000";
+static const char firstfgcolor[]     = "#eeeeee";
+static const char normbgcolor[]     = "#009090";
+static const char normfgcolor[]     = "#000000";
 static const char selbordercolor[]  = "#005577";
-static const char selbgcolor[]      = "#005577";
-static const char selfgcolor[]      = "#eeeeee";
+static const char selbgcolor[]      = "#003355";
+static const char selfgcolor[]      = "#ffffff";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
@@ -68,9 +70,9 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *dmenuwincmd[] = { "dmenu_win", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
-static const char *dmenuvolcmd[] = { "dmenu_vol", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-fb", firstbgcolor, "-ff", firstfgcolor, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenuwincmd[] = { "dmenu_win", "-m", dmenumon, "-fn", dmenufont, "-fb", firstbgcolor, "-ff", firstfgcolor, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenuvolcmd[] = { "dmenu_vol", "-m", dmenumon, "-fn", dmenufont, "-fb", firstbgcolor, "-ff", firstfgcolor, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *slockcmd[] = { "slock", NULL };
 static const char *termcmd[]  = { "st", NULL };
 

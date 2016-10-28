@@ -6,6 +6,7 @@ What's in this fork?
 --------------------
 My fork (aario) contains these features:
 - based on version 6.1(20151109)
+- Works only with dmenu blur branch
 - Systray patch applied
 - Status colors patch applied
 - Per-window keyboard layout patch applied
