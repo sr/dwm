@@ -71,6 +71,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *dmenuwincmd[] = { "dmenu_win", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *dmenuvolcmd[] = { "dmenu_vol", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenumediacmd[] = { "dmenu_media", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *slockcmd[] = { "slock", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
@@ -79,6 +80,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_w,      spawn,          {.v = dmenuwincmd } },
 	{ MODKEY,                       XK_v,      spawn,          {.v = dmenuvolcmd } },
+	{ MODKEY,                       XK_n,      spawn,          {.v = dmenumediacmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_l,      spawn,          {.v = slockcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
@@ -132,3 +134,5 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
 
+static const char AUTOSTART_CMD[] = "~/.dwm/autostart.sh &";
+static const char AUTOSTART_BLOCKING_CMD[] = "~/.dwm/autostart_blocking.sh";
