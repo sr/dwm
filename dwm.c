@@ -1829,7 +1829,7 @@ sigchld(int unused)
 void
 spawn(const Arg *arg)
 {
-	if ((arg->v == dmenucmd) || (arg->v == dmenuwincmd) || (arg->v == dmenuvolcmd))
+	if(strncmp(((char **)arg->v)[0], dmenucmd_prefix, strlen(dmenucmd_prefix)) == 0)
 		dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
 		if (dpy)
