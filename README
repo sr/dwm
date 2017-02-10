@@ -14,6 +14,7 @@ My fork (aario) contains these features:
 - Mod+W keys launch dmenu_win (You have to install it from github.com/aario/dmenu along with wmctrl)
 - Mod+N keys launch dmenu_media (Media player controller menu)
 - Mod+C keys launch dmenu_custom which displays of a list of custom scripts located in $HOME/.dwm/custom_scripts
+- Mod+H keys launch dmenu_home which browses through home folder and opens files
 - Autostart all commands in ~/.dwm/autostart_blocking.sh and ~/.dwm/autostart.sh
 - You can also close windows by Alt+F4
 

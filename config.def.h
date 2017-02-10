@@ -73,6 +73,7 @@ static const char *dmenuwincmd[] = { "dmenu_win", "-m", dmenumon, "-fn", dmenufo
 static const char *dmenuvolcmd[] = { "dmenu_vol", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *dmenumediacmd[] = { "dmenu_media", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *dmenucustomcmd[] = { "dmenu_custom", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *dmenuhomecmd[] = { "dmenu_home", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
 static const char *slockcmd[] = { "slock", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
@@ -83,6 +84,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_v,      spawn,          {.v = dmenuvolcmd } },
 	{ MODKEY,                       XK_n,      spawn,          {.v = dmenumediacmd } },
 	{ MODKEY,                       XK_c,      spawn,          {.v = dmenucustomcmd } },
+	{ MODKEY,                       XK_h,      spawn,          {.v = dmenuhomecmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_l,      spawn,          {.v = slockcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
