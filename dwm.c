@@ -57,7 +57,7 @@
 #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
 #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
 #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
-#define TEXTW(X)                (drw_text(drw, 0, 0, 0, 0, (X)) + drw->fonts[0]->h)
+#define TEXTW(X)                (drw_text(drw, 0, 0, 0, 0, (X), 0, CPU_THREADS) + drw->fonts[0]->h)
 
 #define SYSTEM_TRAY_REQUEST_DOCK    0
 #define _NET_SYSTEM_TRAY_ORIENTATION_HORZ 0
@@ -812,14 +812,14 @@ drawbar(Monitor *m)
 	for (i = 0; i < LENGTH(tags); i++) {
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, &scheme[(m->tagset[m->seltags] & 1 << i) ? 1 : (urg & 1 << i ? 2:0)]);
-		drw_text(drw, x, 0, w, bh, tags[i]);
+		drw_text(drw, x, 0, w, bh, tags[i], 0, CPU_THREADS);
 		drw_rect(drw, x + 1, 1, dx, dx, m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
-		         occ & 1 << i);
+		         occ & 1 << i, False, CPU_THREADS);
 		x += w;
 	}
 	w = blw = TEXTW(m->ltsymbol);
 	drw_setscheme(drw, &scheme[0]);
-	drw_text(drw, x, 0, w, bh, m->ltsymbol);
+	drw_text(drw, x, 0, w, bh, m->ltsymbol, 0, CPU_THREADS);
 	x += w;
 	xx = x;
 	if (m == selmon) { /* status is only drawn on selected monitor */
@@ -832,18 +832,18 @@ drawbar(Monitor *m)
 			x = xx;
 			w = m->ww - xx;
 		}
-		drw_colored_text(drw, scheme, NUMCOLORS, x, 0, w, bh, stext);
+		drw_colored_text(drw, scheme, NUMCOLORS, x, 0, w, bh, stext, CPU_THREADS);
 	} else
 		x = m->ww;
 	if ((w = x - xx) > bh) {
 		x = xx;
 		if (m->sel) {
 			drw_setscheme(drw, &scheme[m == selmon ? 1 : 0]);
-			drw_text(drw, x, 0, w, bh, m->sel->name);
-			drw_rect(drw, x + 1, 1, dx, dx, m->sel->isfixed, m->sel->isfloating);
+			drw_text(drw, x, 0, w, bh, m->sel->name, 0, CPU_THREADS);
+			drw_rect(drw, x + 1, 1, dx, dx, m->sel->isfixed, m->sel->isfloating, False, CPU_THREADS);
 		} else {
 			drw_setscheme(drw, &scheme[0]);
-			drw_rect(drw, x, 0, w, bh, 1, 0);
+			drw_rect(drw, x, 0, w, bh, 1, 0, False, CPU_THREADS);
 		}
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
@@ -1781,6 +1781,7 @@ setup(void)
                 scheme[i].bg = drw_clr_create(drw, colors[i][2]);
         }
 
+	drw_takesblurcreenshot(drw, 0, 0, sw, sh, blurlevel, CPU_THREADS);
 	/* init system tray */
 	updatesystray();
 	/* init bars */
@@ -2342,8 +2343,7 @@ updatesystray(void) {
 	XMapWindow(dpy, systray->win);
 	XMapSubwindows(dpy, systray->win);
 	/* redraw background */
-	XSetForeground(dpy, drw->gc, scheme[SchemeNorm].bg->pix);
-	XFillRectangle(dpy, systray->win, drw->gc, 0, 0, w, bh);
+	drw_rect(drw, 0, 0, w, bh, True, False, False, CPU_THREADS);
 	XSync(dpy, False);
 }
 

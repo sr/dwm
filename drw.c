@@ -4,6 +4,8 @@
 #include <string.h>
 #include <X11/Xlib.h>
 #include <X11/Xft/Xft.h>
+#include "stackblur.h"
+#include "stacktint.h"
 
 #include "drw.h"
 #include "util.h"
@@ -207,7 +209,7 @@ drw_setscheme(Drw *drw, ClrScheme *scheme)
 }
 
 void
-drw_colored_text(Drw *drw, ClrScheme *scheme, int numcolors, int x, int y, unsigned int w, unsigned int h, char *text)
+drw_colored_text(Drw *drw, ClrScheme *scheme, int numcolors, int x, int y, unsigned int w, unsigned int h, char *text, unsigned int num_threads)
 {
 	if (!drw || !drw->fontcount || !drw->scheme)
 		return;
@@ -222,12 +224,12 @@ drw_colored_text(Drw *drw, ClrScheme *scheme, int numcolors, int x, int y, unsig
 		c = *ptr;
 		*ptr = 0;
 		if (i)
-			x = drw_text(drw, x, y, w, h, buf) + drw->fonts[0]->h;
+			x = drw_text(drw, x, y, w, h, buf, False, num_threads) + drw->fonts[0]->h;
 		*ptr = c;
 		drw_setscheme(drw, &scheme[c-1]);
 		buf = ++ptr;
 	}
-	drw_text(drw, x, y, w, h, buf);
+	drw_text(drw, x, y, w, h, buf, False, num_threads);
 }
 
 void
@@ -286,7 +288,7 @@ drw_takesblurcreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, i
 }
 
 int
-drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, const char *text)
+drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, const char *text, int invert, unsigned int num_threads)
 {
 	char buf[1024];
 	int tx, ty, th;
@@ -309,8 +311,15 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, const char *tex
 	if (!(render = x || y || w || h)) {
 		w = ~w;
 	} else {
-		XSetForeground(drw->dpy, drw->gc, drw->scheme->bg->pix);
-		XFillRectangle(drw->dpy, drw->drawable, drw->gc, x, y, w, h);
+		drw_fillrect(
+			drw,
+			x,
+			y,
+			w,
+			h, 
+			invert ? drw->scheme->fg->pix : drw->scheme->bg->pix,
+			num_threads
+		);
 		d = XftDrawCreate(drw->dpy, drw->drawable,
 		                  DefaultVisual(drw->dpy, drw->screen),
 		                  DefaultColormap(drw->dpy, drw->screen));
@@ -358,7 +367,7 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, const char *tex
 					th = curfont->ascent + curfont->descent;
 					ty = y + (h / 2) - (th / 2) + curfont->ascent;
 					tx = x + (h / 2);
-					XftDrawStringUtf8(d, &drw->scheme->fg->rgb, curfont->xfont, tx, ty, (XftChar8 *)buf, len);
+					XftDrawStringUtf8(d, invert ? &drw->scheme->bg->rgb : &drw->scheme->fg->rgb, curfont->xfont, tx, ty, (XftChar8 *)buf, len);
 				}
 				x += tex.w;
 				w -= tex.w;

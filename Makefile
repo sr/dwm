@@ -3,7 +3,7 @@
 
 include config.mk
 
-SRC = drw.c dwm.c util.c
+SRC = drw.c dwm.c util.c stackblur.c stacktint.c
 OBJ = ${SRC:.c=.o}
 
 all: options dwm
@@ -26,7 +26,7 @@ config.h:
 
 dwm: ${OBJ}
 	@echo CC -o $@
-	@${CC} -o $@ ${OBJ} ${LDFLAGS}
+	@${CC} -pthread -o $@ ${OBJ} ${LDFLAGS}
 
 clean:
 	@echo cleaning

@@ -12,7 +12,7 @@ static const char colors[NUMCOLORS][MAXCOLORS][8] = {
 
 /* appearance */
 static const char *fonts[] = {
-	"monospace:size=10"
+	"monospace:size=15"
 };
 static const char dmenufont[]       = "monospace:size=10";
 static const char normbordercolor[] = "#444444";
@@ -143,3 +143,8 @@ static Button buttons[] = {
 
 static const char AUTOSTART_CMD[] = "~/.dwm/autostart.sh &";
 static const char AUTOSTART_BLOCKING_CMD[] = "~/.dwm/autostart_blocking.sh";
+/* intensity of blur level*/
+static unsigned int blurlevel  = 20;
+
+//Used for multi-threaded blur effect
+#define CPU_THREADS 4 
