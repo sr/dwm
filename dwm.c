@@ -1568,10 +1568,14 @@ run(void)
 
 void
 runAutostart(void) {
-	system("cd ~/.dwm; ./autostart_blocking.sh");
-	system("cd ~/.dwm; ./autostart.sh &");
+	system(AUTOSTART_CMD);
 }
 
+
+void
+runAutostartBlocking(void) {
+	system(AUTOSTART_BLOCKING_CMD);
+}
 void
 scan(void)
 {
@@ -1825,7 +1829,7 @@ sigchld(int unused)
 void
 spawn(const Arg *arg)
 {
-	if ((arg->v == dmenucmd) || (arg->v == dmenuwincmd) || (arg->v == dmenuvolcmd))
+	if(strncmp(((char **)arg->v)[0], dmenucmd_prefix, strlen(dmenucmd_prefix)) == 0)
 		dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
 		if (dpy)
@@ -2485,13 +2489,19 @@ main(int argc, char *argv[])
 		die("usage: dwm [-v]\n");
 	if (!setlocale(LC_CTYPE, "") || !XSupportsLocale())
 		fputs("warning: no locale support\n", stderr);
+
+	puts("Waiting for autostart_blocking...\n");
+	runAutostartBlocking();
+
 	if (!(dpy = XOpenDisplay(NULL)))
 		die("dwm: cannot open display\n");
 	checkotherwm();
 	setup();
+
+	runAutostart();
+
 	scan();
 	run();
-	runAutostart();
 	cleanup();
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;
