@@ -231,15 +231,58 @@ drw_colored_text(Drw *drw, ClrScheme *scheme, int numcolors, int x, int y, unsig
 }
 
 void
-drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, int filled, int empty)
+drw_bluriamge (XImage *image, int radius, unsigned int cpu_threads)
 {
+	stackblur(
+		image,
+		0,
+		0,
+		image->width,
+		image->height,
+		radius,
+		cpu_threads
+	);
+}
+
+void
+drw_fillrect(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned long tint, unsigned int num_threads)
+{
+	XImage *image = malloc(sizeof(XImage));
+    memcpy(image,drw->screenshot,sizeof(XImage));
+    unsigned long bytes2copy=sizeof(char)*drw->screenshot->bytes_per_line*drw->screenshot->height;
+    image->data=malloc(bytes2copy);
+    memcpy(image->data,drw->screenshot->data,bytes2copy);
+    unsigned char *t = malloc(3 * sizeof(char));
+    t[0] = tint & 0xff;
+    t[1] = (tint >> 8) & 0xff;
+    t[2] = (tint >> 16) & 0xff;
+    stacktint(image, t, num_threads);
+    
+    XPutImage(drw->dpy, drw->drawable, drw->gc, image, x, y, x, y, w, h);
+    XFlush(drw->dpy);
+    free(image);
+}
+
+void
+drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, int filled, int empty, int invert, unsigned int num_threads)
+{
+	unsigned long pix;
 	if (!drw->scheme)
 		return;
-	XSetForeground(drw->dpy, drw->gc, drw->scheme->fg->pix);
+	pix = invert ? drw->scheme->bg->pix : drw->scheme->fg->pix;
 	if (filled)
-		XFillRectangle(drw->dpy, drw->drawable, drw->gc, x, y, w + 1, h + 1);
-	else if (empty)
+		drw_fillrect(drw, x, y, w + 1, h + 1, pix, num_threads);
+	else if (empty) {
+		XSetForeground(drw->dpy, drw->gc, pix);
 		XDrawRectangle(drw->dpy, drw->drawable, drw->gc, x, y, w, h);
+	}
+}
+
+void
+drw_takesblurcreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads)
+{
+    drw->screenshot = XGetImage(drw->dpy,drw->root, x, y, w, h, AllPlanes, ZPixmap);
+    drw_bluriamge(drw->screenshot, blurlevel, num_threads);
 }
 
 int
