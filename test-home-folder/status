@@ -1,0 +1,11 @@
+#!/bin/bash
+[ -f /tmp/status ] || touch /tmp/status
+while [ 1 ]; do
+	mem=`free | grep Mem | awk '{mem=($3-$7)*100/$2; printf "%2.0f\n", mem}'`
+	bat=`acpi -b | cut -d '%' -f1 | awk '{print $NF}'`
+	cpu_temp=`sensors  | grep Core | head -1 | awk '{print $3}'`
+	curr_date=`date "+%a %d|%H:%M:%S" | tr -d '\n'`
+	extra_status=`cat /tmp/status | tr -d '\n'`
+	xsetroot -name "$extra_status[MEM: $mem%] [BAT: $bat""%] [CPU: $cpu_temp] [$curr_date]"
+	sleep 1
+done
