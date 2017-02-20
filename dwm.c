@@ -800,6 +800,11 @@ drawbar(Monitor *m)
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
+	handler[Expose] = NULL;
+	XUnmapWindow(dpy, m->barwin);
+	drw_takesblurcreenshot(drw, 0, 0, m->ww, bh, 10, CPU_THREADS);
+	XMapRaised(dpy, m->barwin);
+//	handler[Expose] = expose;
 	dx = (drw->fonts[0]->ascent + drw->fonts[0]->descent + 2) / 4;
 
 	resizebarwin(m);
@@ -1781,7 +1786,6 @@ setup(void)
                 scheme[i].bg = drw_clr_create(drw, colors[i][2]);
         }
 
-	drw_takesblurcreenshot(drw, 0, 0, sw, sh, blurlevel, CPU_THREADS);
 	/* init system tray */
 	updatesystray();
 	/* init bars */

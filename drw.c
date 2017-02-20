@@ -249,7 +249,7 @@ drw_bluriamge (XImage *image, int radius, unsigned int cpu_threads)
 void
 drw_fillrect(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned long tint, unsigned int num_threads)
 {
-	XImage *image = malloc(sizeof(XImage));
+		XImage *image = malloc(sizeof(XImage));
     memcpy(image,drw->screenshot,sizeof(XImage));
     unsigned long bytes2copy=sizeof(char)*drw->screenshot->bytes_per_line*drw->screenshot->height;
     image->data=malloc(bytes2copy);
