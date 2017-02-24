@@ -281,7 +281,7 @@ drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, int filled, int
 }
 
 void
-drw_takesblurcreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads)
+drw_takeblurcreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads)
 {
     drw->screenshot = XGetImage(drw->dpy,drw->root, x, y, w, h, AllPlanes, ZPixmap);
     drw_bluriamge(drw->screenshot, blurlevel, num_threads);
