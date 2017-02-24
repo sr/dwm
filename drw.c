@@ -64,7 +64,7 @@ utf8decode(const char *c, long *u, size_t clen)
 }
 
 Drw *
-drw_create(Display *dpy, int screen, Window root, unsigned int w, unsigned int h)
+drw_create(Display *dpy, int screen, Window root, unsigned int w, unsigned int h, unsigned int numcolors)
 {
 	Drw *drw;
 
@@ -78,7 +78,8 @@ drw_create(Display *dpy, int screen, Window root, unsigned int w, unsigned int h
 	drw->gc = XCreateGC(dpy, root, 0, NULL);
 	drw->fontcount = 0;
 	XSetLineAttributes(dpy, drw->gc, 1, LineSolid, CapButt, JoinMiter);
-
+	drw->tintcache = malloc(numcolors * sizeof(TintCache));
+	drw->tintcachecount = numcolors;
 	return drw;
 }
 
@@ -247,24 +248,39 @@ drw_bluriamge (XImage *image, int radius, unsigned int cpu_threads)
 	);
 }
 
+XImage*
+drw_gettintedscreenshot(Drw* drw, unsigned long tint, unsigned int num_threads)
+{
+	for (int i = 0; i < drw->tintcachecount; i++) {
+		if (drw->tintcache[i].tint == tint) {
+			return drw->tintcache[i].image;
+		} else {
+			if (!drw->tintcache[i].tint) {
+				drw->tintcache[i].tint = tint;
+				drw->tintcache[i].image = malloc(sizeof(XImage));
+				memcpy(drw->tintcache[i].image,drw->screenshot,sizeof(XImage));
+				unsigned long bytes2copy=sizeof(char)*drw->screenshot->bytes_per_line*drw->screenshot->height;
+				drw->tintcache[i].image->data=malloc(bytes2copy);
+				memcpy(drw->tintcache[i].image->data,drw->screenshot->data,bytes2copy);
+				unsigned char *t = malloc(3 * sizeof(char));
+				t[0] = tint & 0xff;
+				t[1] = (tint >> 8) & 0xff;
+				t[2] = (tint >> 16) & 0xff;
+				stacktint(drw->tintcache[i].image, t, num_threads);
+				return drw->tintcache[i].image;
+			}
+		}
+	}
+	printf("FATAL: An undefined tint color introduced!\n");
+	return NULL;
+}
+
 void
 drw_fillrect(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned long tint, unsigned int num_threads)
 {
-		XImage *image = malloc(sizeof(XImage));
-    memcpy(image,drw->screenshot,sizeof(XImage));
-    unsigned long bytes2copy=sizeof(char)*drw->screenshot->bytes_per_line*drw->screenshot->height;
-    image->data=malloc(bytes2copy);
-    memcpy(image->data,drw->screenshot->data,bytes2copy);
-    unsigned char *t = malloc(3 * sizeof(char));
-    t[0] = tint & 0xff;
-    t[1] = (tint >> 8) & 0xff;
-    t[2] = (tint >> 16) & 0xff;
-    stacktint(image, t, num_threads);
-    
+    XImage* image = drw_gettintedscreenshot(drw, tint, num_threads);
     XPutImage(drw->dpy, drw->drawable, drw->gc, image, x, y, x, y, w, h);
     XFlush(drw->dpy);
-    free(image->data);
-    free(image);
 }
 
 void
@@ -315,6 +331,13 @@ drw_takeblurscreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, i
 					drw->screenshot = XGetImage(drw->dpy, p, x, y, w, h, AllPlanes, ZPixmap);
 					drw_bluriamge(drw->screenshot, blurlevel, num_threads);
 					drw->last_wallpaper_data = wallpaper_data;
+					for (int i = 0; i < drw->tintcachecount; i++) {
+							if (drw->tintcache[i].tint) {
+									drw->tintcache[i].tint = 0;
+									free(drw->tintcache[i].image->data);
+									free(drw->tintcache[i].image);
+							}
+					}
 				}
 		} else {
 				drw->screenshot = XGetImage(drw->dpy,drw->root, x, y, w, h, AllPlanes, ZPixmap);

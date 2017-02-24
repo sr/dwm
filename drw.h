@@ -26,6 +26,11 @@ typedef struct {
 } ClrScheme;
 
 typedef struct {
+	unsigned long tint;
+	XImage *image;
+} TintCache;
+
+typedef struct {
 	unsigned int w, h;
 	Display *dpy;
 	int screen;
@@ -37,6 +42,8 @@ typedef struct {
 	unsigned char* last_wallpaper_data;
 	size_t fontcount;
 	Fnt *fonts[DRW_FONT_CACHE_SIZE];
+	unsigned int tintcachecount;
+	TintCache *tintcache;
 } Drw;
 
 typedef struct {
@@ -48,7 +55,7 @@ void drw_bluriamge (XImage *image, int radius, unsigned int cpu_threads);
 void drw_blurrect(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned long tint, unsigned int num_threads);
 
 /* Drawable abstraction */
-Drw *drw_create(Display *, int, Window, unsigned int, unsigned int);
+Drw *drw_create(Display *, int, Window, unsigned int, unsigned int, unsigned int numcolors);
 void drw_resize(Drw *, unsigned int, unsigned int);
 void drw_free(Drw *);
 void drw_takeblurscreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads);
