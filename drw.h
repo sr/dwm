@@ -34,6 +34,7 @@ typedef struct {
 	GC gc;
 	ClrScheme *scheme;
 	XImage *screenshot;
+	unsigned char* last_wallpaper_data;
 	size_t fontcount;
 	Fnt *fonts[DRW_FONT_CACHE_SIZE];
 } Drw;

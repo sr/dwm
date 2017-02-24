@@ -263,6 +263,7 @@ drw_fillrect(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned lo
     
     XPutImage(drw->dpy, drw->drawable, drw->gc, image, x, y, x, y, w, h);
     XFlush(drw->dpy);
+    free(image->data);
     free(image);
 }
 
@@ -297,37 +298,27 @@ drw_getrootwallpaperdata(Drw *drw)
                 &data) == Success) {
 
         if (data) {
-						printf("p\n");
 						return data;
         }
     }
 
-		printf("np\n");
     return NULL;
 }
 
 void
 drw_takeblurscreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads)
 {
-		printf("1\n");
 		unsigned char* wallpaper_data = drw_getrootwallpaperdata(drw);
-		printf("2\n");
 		if (wallpaper_data) {
-				printf("31\n");
-				Pixmap p = *((Pixmap *) wallpaper_data);
-				printf("32\n");
-				drw->screenshot = XGetImage(drw->dpy, p, x, y, w, h, AllPlanes, ZPixmap);
-				printf("33\n");
-	//			XFree(wallpaper_data);
-				printf("34\n");
-//				XFreePixmap(drw->dpy, p);
-				printf("35\n");
+				if ((!drw->last_wallpaper_data) || (strncmp((char*)wallpaper_data, (char*)drw->last_wallpaper_data, (y+h)*w*4))) {
+					Pixmap p = *((Pixmap *) wallpaper_data);
+					drw->screenshot = XGetImage(drw->dpy, p, x, y, w, h, AllPlanes, ZPixmap);
+					drw_bluriamge(drw->screenshot, blurlevel, num_threads);
+					drw->last_wallpaper_data = wallpaper_data;
+				}
 		} else {
-				printf("4\n");
 				drw->screenshot = XGetImage(drw->dpy,drw->root, x, y, w, h, AllPlanes, ZPixmap);
 		}
-				printf("5\n");
-    drw_bluriamge(drw->screenshot, blurlevel, num_threads);
 }
 
 int
