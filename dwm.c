@@ -800,13 +800,9 @@ drawbar(Monitor *m)
 	unsigned int i, occ = 0, urg = 0;
 	Client *c;
 
-	handler[Expose] = NULL;
-	XUnmapWindow(dpy, m->barwin);
-	drw_takeblurcreenshot(drw, 0, 0, m->ww, bh, 10, CPU_THREADS);
-	XMapRaised(dpy, m->barwin);
-//	handler[Expose] = expose;
 	dx = (drw->fonts[0]->ascent + drw->fonts[0]->descent + 2) / 4;
 
+	drw_takeblurscreenshot(drw, 0, 0, m->ww, bh, blurlevel, CPU_THREADS);
 	resizebarwin(m);
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;

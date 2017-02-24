@@ -4,6 +4,7 @@
 #include <string.h>
 #include <X11/Xlib.h>
 #include <X11/Xft/Xft.h>
+#include <X11/Xatom.h>
 #include "stackblur.h"
 #include "stacktint.h"
 
@@ -280,10 +281,52 @@ drw_rect(Drw *drw, int x, int y, unsigned int w, unsigned int h, int filled, int
 	}
 }
 
-void
-drw_takeblurcreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads)
+unsigned char *
+drw_getrootwallpaperdata(Drw *drw)
 {
-    drw->screenshot = XGetImage(drw->dpy,drw->root, x, y, w, h, AllPlanes, ZPixmap);
+    Atom act_type;
+    int act_format;
+    unsigned long nitems, bytes_after;
+    unsigned char *data = NULL;
+    Atom _XROOTPMAP_ID;
+
+    _XROOTPMAP_ID = XInternAtom(drw->dpy, "_XROOTPMAP_ID", False);
+
+    if (XGetWindowProperty(drw->dpy, drw->root, _XROOTPMAP_ID, 0, 1, False,
+                XA_PIXMAP, &act_type, &act_format, &nitems, &bytes_after,
+                &data) == Success) {
+
+        if (data) {
+						printf("p\n");
+						return data;
+        }
+    }
+
+		printf("np\n");
+    return NULL;
+}
+
+void
+drw_takeblurscreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads)
+{
+		printf("1\n");
+		unsigned char* wallpaper_data = drw_getrootwallpaperdata(drw);
+		printf("2\n");
+		if (wallpaper_data) {
+				printf("31\n");
+				Pixmap p = *((Pixmap *) wallpaper_data);
+				printf("32\n");
+				drw->screenshot = XGetImage(drw->dpy, p, x, y, w, h, AllPlanes, ZPixmap);
+				printf("33\n");
+	//			XFree(wallpaper_data);
+				printf("34\n");
+//				XFreePixmap(drw->dpy, p);
+				printf("35\n");
+		} else {
+				printf("4\n");
+				drw->screenshot = XGetImage(drw->dpy,drw->root, x, y, w, h, AllPlanes, ZPixmap);
+		}
+				printf("5\n");
     drw_bluriamge(drw->screenshot, blurlevel, num_threads);
 }
 

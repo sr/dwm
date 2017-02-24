@@ -50,7 +50,7 @@ void drw_blurrect(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsign
 Drw *drw_create(Display *, int, Window, unsigned int, unsigned int);
 void drw_resize(Drw *, unsigned int, unsigned int);
 void drw_free(Drw *);
-void drw_takeblurcreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads);
+void drw_takeblurscreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads);
 
 /* Fnt abstraction */
 Fnt *drw_font_create(Drw *, const char *);
