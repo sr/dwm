@@ -3,9 +3,9 @@
 #define NUMCOLORS         4
 static const char colors[NUMCOLORS][MAXCOLORS][8] = {
   // border   foreground background
-  { "#000033", "#dddddd", "#000033" },  // normal
-  { "#000088", "#ffffff", "#000088" },  // selected
-  { "#ff0000", "#000000", "#ffff00" },  // urgent/warning  (black on yellow)
+  { "#FFFFFF", "#333333", "#FFFFFF" },  // normal
+  { "#00E8FF", "#000000", "#00E8FF" },  // selected
+  { "#FF8F00", "#000000", "#FF8F00" },  // urgent/warning  (black on yellow)
   { "#ff0000", "#ffffff", "#ff0000" },  // error (white on red)
   // add more here
 };
@@ -148,7 +148,7 @@ static Button buttons[] = {
 static const char AUTOSTART_CMD[] = "~/.dwm/autostart.sh &";
 static const char AUTOSTART_BLOCKING_CMD[] = "~/.dwm/autostart_blocking.sh";
 /* intensity of blur level*/
-static unsigned int blurlevel  = 20;
+static unsigned int blurlevel  = 5;
 
 //Used for multi-threaded blur effect
 #define CPU_THREADS 4 

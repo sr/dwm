@@ -802,7 +802,6 @@ drawbar(Monitor *m)
 
 	dx = (drw->fonts[0]->ascent + drw->fonts[0]->descent + 2) / 4;
 
-	drw_takeblurscreenshot(drw, 0, 0, m->ww, bh, blurlevel, CPU_THREADS);
 	resizebarwin(m);
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;
@@ -1369,6 +1368,11 @@ propertynotify(XEvent *e)
 		resizebarwin(selmon);
 		updatesystray();
 	}
+	if (ev->atom == XInternAtom(drw->dpy, "_XROOTPMAP_ID", False)) {
+		Monitor *m = wintomon(ev->window);
+		drw_takebluredwallpaper(drw, 0, 0, m->ww, bh, blurlevel, CPU_THREADS);
+		drawbar(m);
+	}
 	if ((ev->window == root) && (ev->atom == XA_WM_NAME))
 		updatestatus();
 	else if (ev->state == PropertyDelete)
@@ -1782,6 +1786,7 @@ setup(void)
                 scheme[i].bg = drw_clr_create(drw, colors[i][2]);
         }
 
+	drw_takebluredwallpaper(drw, 0, 0, sw, bh, blurlevel, CPU_THREADS);
 	/* init system tray */
 	updatesystray();
 	/* init bars */

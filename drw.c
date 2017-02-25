@@ -322,7 +322,7 @@ drw_getrootwallpaperdata(Drw *drw)
 }
 
 void
-drw_takeblurscreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads)
+drw_takebluredwallpaper(Drw *drw, int x, int y, unsigned int w, unsigned int h, int blurlevel, unsigned int num_threads)
 {
 		unsigned char* wallpaper_data = drw_getrootwallpaperdata(drw);
 		if (wallpaper_data) {
