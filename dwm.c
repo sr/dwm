@@ -299,7 +299,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[ResizeRequest] = resizerequest,
 	[UnmapNotify] = unmapnotify
 };
-static Atom wmatom[WMLast], netatom[NetLast], xatom[XLast];
+static Atom wmatom[WMLast], netatom[NetLast], xatom[XLast], rootpmapid;
 static int running = 1;
 static Cur *cursor[CurLast];
 static ClrScheme scheme[MAXCOLORS];
@@ -1368,7 +1368,7 @@ propertynotify(XEvent *e)
 		resizebarwin(selmon);
 		updatesystray();
 	}
-	if (ev->atom == XInternAtom(drw->dpy, "_XROOTPMAP_ID", False)) {
+	if (ev->atom == rootpmapid) {
 		Monitor *m = wintomon(ev->window);
 		drw_takebluredwallpaper(drw, 0, 0, m->ww, bh, blurlevel, CPU_THREADS);
 		drawbar(m);
@@ -1775,6 +1775,7 @@ setup(void)
 	xatom[Manager] = XInternAtom(dpy, "MANAGER", False);
 	xatom[Xembed] = XInternAtom(dpy, "_XEMBED", False);
 	xatom[XembedInfo] = XInternAtom(dpy, "_XEMBED_INFO", False);
+	rootpmapid = XInternAtom(dpy, "_XROOTPMAP_ID", False);
 	/* init cursors */
 	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
 	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
