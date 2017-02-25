@@ -326,7 +326,7 @@ drw_takeblurscreenshot(Drw *drw, int x, int y, unsigned int w, unsigned int h, i
 {
 		unsigned char* wallpaper_data = drw_getrootwallpaperdata(drw);
 		if (wallpaper_data) {
-				if ((!drw->last_wallpaper_data) || (strncmp((char*)wallpaper_data, (char*)drw->last_wallpaper_data, (y+h)*w*4))) {
+				if ((!drw->last_wallpaper_data) || (memcmp(wallpaper_data, drw->last_wallpaper_data, (y+h)*w*4))) {
 					Pixmap p = *((Pixmap *) wallpaper_data);
 					drw->screenshot = XGetImage(drw->dpy, p, x, y, w, h, AllPlanes, ZPixmap);
 					drw_bluriamge(drw->screenshot, blurlevel, num_threads);
