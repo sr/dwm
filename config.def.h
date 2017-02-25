@@ -3,9 +3,9 @@
 #define NUMCOLORS         4
 static const char colors[NUMCOLORS][MAXCOLORS][8] = {
   // border   foreground background
-  { "#FFFFFF", "#333333", "#FFFFFF" },  // normal
-  { "#00E8FF", "#000000", "#00E8FF" },  // selected
-  { "#FF8F00", "#000000", "#FF8F00" },  // urgent/warning  (black on yellow)
+  { "#252525", "#CFFFEA", "#252525" },  // normal
+  { "#E08A00", "#00FFFC", "#E08A00" },  // selected
+  { "#FFCA00", "#000000", "#FFCA00" },  // urgent/warning  (black on yellow)
   { "#ff0000", "#ffffff", "#ff0000" },  // error (white on red)
   // add more here
 };
@@ -15,14 +15,14 @@ static const char *fonts[] = {
 	"monospace:size=15"
 };
 static const char dmenufont[]       = "monospace:size=10";
-static const char normbordercolor[] = "#444444";
-static const char firstbgcolor[]     = "#000000";
-static const char firstfgcolor[]     = "#eeeeee";
-static const char normbgcolor[]     = "#009090";
-static const char normfgcolor[]     = "#000000";
-static const char selbordercolor[]  = "#005577";
-static const char selbgcolor[]      = "#003355";
-static const char selfgcolor[]      = "#ffffff";
+static const char normbordercolor[] = "#252525";
+static const char firstbgcolor[]     = "#252525";
+static const char firstfgcolor[]     = "#CFFFEA";
+static const char normbgcolor[]     = "#252525";
+static const char normfgcolor[]     = "#CFFFEA";
+static const char selbordercolor[]  = "#E08A00";
+static const char selbgcolor[]      = "#E08A00";
+static const char selfgcolor[]      = "#00FFFC";
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
