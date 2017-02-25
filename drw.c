@@ -78,8 +78,8 @@ drw_create(Display *dpy, int screen, Window root, unsigned int w, unsigned int h
 	drw->gc = XCreateGC(dpy, root, 0, NULL);
 	drw->fontcount = 0;
 	XSetLineAttributes(dpy, drw->gc, 1, LineSolid, CapButt, JoinMiter);
-	drw->tintcache = malloc(numcolors * sizeof(TintCache));
-	drw->tintcachecount = numcolors;
+	drw->tintcachecount = 2 * numcolors; //Enough space to cache all possible foreground and background colors
+	drw->tintcache = malloc(drw->tintcachecount * sizeof(TintCache));
 	return drw;
 }
 
@@ -252,26 +252,24 @@ XImage*
 drw_gettintedscreenshot(Drw* drw, unsigned long tint, unsigned int num_threads)
 {
 	for (int i = 0; i < drw->tintcachecount; i++) {
-		if (drw->tintcache[i].tint == tint) {
+		if ((drw->tintcache[i].tint == tint) && (drw->tintcache[i].image)){
 			return drw->tintcache[i].image;
-		} else {
-			if (!drw->tintcache[i].tint) {
-				drw->tintcache[i].tint = tint;
-				drw->tintcache[i].image = malloc(sizeof(XImage));
-				memcpy(drw->tintcache[i].image,drw->screenshot,sizeof(XImage));
-				unsigned long bytes2copy=sizeof(char)*drw->screenshot->bytes_per_line*drw->screenshot->height;
-				drw->tintcache[i].image->data=malloc(bytes2copy);
-				memcpy(drw->tintcache[i].image->data,drw->screenshot->data,bytes2copy);
-				unsigned char *t = malloc(3 * sizeof(char));
-				t[0] = tint & 0xff;
-				t[1] = (tint >> 8) & 0xff;
-				t[2] = (tint >> 16) & 0xff;
-				stacktint(drw->tintcache[i].image, t, num_threads);
-				return drw->tintcache[i].image;
-			}
+		} else if (!drw->tintcache[i].image) {
+			drw->tintcache[i].tint = tint;
+			drw->tintcache[i].image = malloc(sizeof(XImage));
+			memcpy(drw->tintcache[i].image,drw->screenshot,sizeof(XImage));
+			unsigned long bytes2copy=sizeof(char)*drw->screenshot->bytes_per_line*drw->screenshot->height;
+			drw->tintcache[i].image->data=malloc(bytes2copy);
+			memcpy(drw->tintcache[i].image->data,drw->screenshot->data,bytes2copy);
+			unsigned char *t = malloc(3 * sizeof(char));
+			t[0] = tint & 0xff;
+			t[1] = (tint >> 8) & 0xff;
+			t[2] = (tint >> 16) & 0xff;
+			stacktint(drw->tintcache[i].image, t, num_threads);
+			return drw->tintcache[i].image;
 		}
 	}
-	printf("FATAL: An undefined tint color introduced!\n");
+	printf("FATAL: An undefined tint color introduced: %lu\n", tint);
 	return NULL;
 }
 
@@ -336,6 +334,7 @@ drw_takebluredwallpaper(Drw *drw, int x, int y, unsigned int w, unsigned int h, 
 									drw->tintcache[i].tint = 0;
 									free(drw->tintcache[i].image->data);
 									free(drw->tintcache[i].image);
+									drw->tintcache[i].image = NULL;
 							}
 					}
 				}
