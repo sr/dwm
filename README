@@ -10,7 +10,7 @@ This is what you get (Transparent bar, No need for OpenGL):
 My fork (aario) contains these features:
 - based on version 6.1(20151109)
 - Blur Effect  A fast and nice blur effect. Does not need OpenGL and is all CPU based.
-- Works only with dmenu blur branch
+- Works only with my fork of dmenu
 - Systray patch applied
 - Status colors patch applied
 - Per-window keyboard layout patch applied
