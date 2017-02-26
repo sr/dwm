@@ -838,12 +838,12 @@ drawbar(Monitor *m)
 	if ((w = x - xx) > bh) {
 		x = xx;
 		if (m->sel) {
-			drw_setscheme(drw, &scheme[m == selmon ? 1 : 0]);
+			drw_setscheme(drw, &scheme[m == selmon ? 4 : 0]);
 			drw_text(drw, x, 0, w, bh, m->sel->name, 0, CPU_THREADS);
 			drw_rect(drw, x + 1, 1, dx, dx, m->sel->isfixed, m->sel->isfloating, False, CPU_THREADS);
 		} else {
 			drw_setscheme(drw, &scheme[0]);
-			drw_rect(drw, x, 0, w, bh, 1, 0, False, CPU_THREADS);
+			drw_rect(drw, x, 0, w, bh, 1, 0, True, CPU_THREADS);
 		}
 	}
 	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
