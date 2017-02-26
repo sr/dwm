@@ -15,7 +15,7 @@ static const char colors[NUMCOLORS][MAXCOLORS][8] = {
 static const char *fonts[] = {
 	"monospace:size=15"
 };
-static const char dmenufont[]       = "monospace:size=10";
+static const char dmenufont[]       = "monospace:size=15";
 static const char normbordercolor[] = "#252525";
 static const char firstbgcolor[]     = "#252525";
 static const char firstfgcolor[]     = "#CFFFEA";

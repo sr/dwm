@@ -4,8 +4,12 @@ dwm is an extremely fast, small, and dynamic window manager for X.
 
 What's in this fork?
 --------------------
+This is what you get (Transparent bar, No need for OpenGL):
+![Screenshot](screenshot.png?raw=true "Fully CPU Based No OpenGL Static Blur Effect")
+
 My fork (aario) contains these features:
 - based on version 6.1(20151109)
+- Blur Effect  A fast and nice blur effect. Does not need OpenGL and is all CPU based.
 - Works only with dmenu blur branch
 - Systray patch applied
 - Status colors patch applied
@@ -69,3 +73,13 @@ Configuration
 -------------
 The configuration of dwm is done by creating a custom config.h
 and (re)compiling the source code.
+
+## THE STACK-BLUR PART OF THE CODE IS BASED ON GREATE WORK BY:
+Mario Klingemann <mario@quasimondo.com>
+
+Link to the original work:
+- http://incubator.quasimondo.com/processing/fast_blur_deluxe.php
+
+The original source code of stack-blur:
+- http://incubator.quasimondo.com/processing/stackblur.pde
+
