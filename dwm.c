@@ -1920,6 +1920,20 @@ view(const Arg *arg) {
 	arrange(selmon);
 }
 
+void
+viewscroll(const Arg *arg)
+{
+  unsigned int test = selmon->tagset[selmon->seltags];
+  if (arg->i > 0)
+    test = (test << arg->i) & TAGMASK;
+  else
+    test = (test >> -arg->i) & TAGMASK;
+
+  Arg a = {.ui = test};
+  if (a.ui)
+    view(&a);
+}
+
 Client *
 wintoclient(Window w) {
 	Client *c;
